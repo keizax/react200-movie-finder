@@ -34,3 +34,23 @@ describe('express', () => {
   it('returns the correct status code', () => axios.get(url)
     .then(response => expect(response.status === 200)));
 });
+
+it('should have search input', () =>
+    nightmare
+      .goto(searchPage)
+      .evaluate(() => document.querySelector('body').innerHTML)
+      .end()
+      .then((text) => {
+        expect(text).to.contain('input');
+      })
+  );
+
+it('should have button element', () =>
+    nightmare
+      .goto(searchPage)
+      .evaluate(() => document.querySelector('body').innerHTML)
+      .end()
+      .then((text) => {
+        expect(text).to.contain('button');
+      })
+);
