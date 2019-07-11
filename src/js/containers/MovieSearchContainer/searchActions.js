@@ -1,11 +1,16 @@
 const axios = require('axios');
-// Action Creators
-export const getMovie = movie => ({
-  type: 'GET_MOVIE',
-  payload: axios.get(`/movies/${movie}`)
+
+export const updateSearch = title => ({
+  type: 'UPDATE_SEARCH_INPUT',
+  payload: title
 });
 
-export const searchMovie = movie => ({
-  type: 'UPDATE_SEARCH',
-  payload: { movie }
+export const getMovie = title => ({
+  type: 'GET_MOVIE',
+  payload: axios.get(`/movies/${title}`)
+});
+
+export const getInfo = id => ({
+  type: 'GET_INFO',
+  payload: axios.get(`/movie/${id}`)
 });

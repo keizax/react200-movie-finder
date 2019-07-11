@@ -1,6 +1,6 @@
-import React from 'react';
-import { searchMovie, getMovie } from './searchActions';
-
+import React, { Component } from 'react';
+import { updateSearch, getMovie } from './searchActions';
+import { Link } from 'react-router-dom';
 
 export default class MovieSearchContainer extends React.Component {
   constructor(props) {
@@ -10,30 +10,53 @@ export default class MovieSearchContainer extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSearch(event) {
+  handleSearch(e) {
     const { dispatch } = this.props;
-    const { value } = event.target;
-    dispatch(searchMovie(value));
+    const { value } = e.target;
+    dispatch(updateSearch(value));
   }
 
   handleSubmit() {
-    const { dispatch, movie } = this.props;
-    dispatch(getMovie(movie));
+    const { title, dispatch } = this.props;
+    dispatch(getMovie(title));
   }
 
   render() {
-    const { value } = this.props;
+    const { value, movies } = this.props;
     return (
-      <div style={ { marginTop: '20px', marginBottom: '20px' } }>
-        <div>
-          <h1>Movie Finder</h1>
-        </div>
-        <div className='input-group'>
-          <input type='text' className='form-control' placeholder='Enter A Movie' value={ value } onChange={ this.handleSearch } />
-          <div className='input-group-append'>
-            <button className='btn btn-outline-secondary' type='button' onClick={ this.handleSubmit }>Go!</button>
+      <div>
+        <div style={ { marginTop: '20px', marginBottom: '20px' } }>
+          <div className='jumbotron text-center'>
+            <h1>SDCS Movie Finder</h1>
+          </div>
+          <div className='input-group'>
+            <input type='text' className='form-control' placeholder='Enter A Movie' value={ value } onChange={ this.handleSearch } />
+            <div className='input-group-append'>
+              <button className='btn btn-outline-secondary' type='button' onClick={ this.handleSubmit }>Go!</button>
+            </div>
           </div>
         </div>
+
+        { movies.map(searchedMovie => (
+          <div className='card'>
+            <div className='card-body row'>
+              <div className='col-4'>
+                <img
+                  className='img-fluid'
+                  src={ searchedMovie.Poster }
+                  alt={ searchedMovie.Title }
+                />
+              </div>
+              <div className='col-8'>
+                <h5 className='card-title'>{ searchedMovie.Title }</h5>
+                <h6 className='card-subtitle'>Released: { searchedMovie.Year }</h6>
+                <hr />
+                <p className='card-text'>Type: { searchedMovie.Type }</p>
+                <Link to={ `/movie/${searchedMovie.imdbID}` } className='btn btn-primary float-right'>More Information</Link>
+              </div>
+            </div>
+          </div>
+  ))}
       </div>
     );
   }
